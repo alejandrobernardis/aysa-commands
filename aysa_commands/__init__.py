@@ -49,7 +49,7 @@ from aysa_commands._common import Command
 # TopLevel
 class TopLevelCommand(Command):
     """
-    AySA, Utilidad para la gestión de despliegues en `docker`.
+    AySA, Utilidad para la gestión de despliegues sobre `docker`.
 
     Usage:
         aysa [options] COMMAND [ARGS...]
@@ -67,13 +67,17 @@ class TopLevelCommand(Command):
                                                 `<protocol>://<username>:<password>@<host>:<port>`
 
     Comandos disponibles:
-        config    Lista y administra los valores de la configuración del entorno de trabajo
-                  definidos por el archivo `~/.aysa/config.ini`.
+        config      Lista y administra los valores de la configuración del entorno de trabajo
+                    definidos por el archivo `~/.aysa/config.ini`.
+        registry    Lista las `imágenes` y administra los `tags` del `repositorio`.
+        release     Crea las `imágenes` para los entornos de `QA/TESTING` y `PRODUCCIÓN`.
+        remote      Despliega las `imágenes` en los entornos de `DESARROLLO` y `QA/TESTING`.
 
     > Utilice `aysa COMMAND (-h|--help)` para ver la `ayuda` especifica del comando.
     """
 
     def __init__(self, command, options=None, **kwargs):
+        # TODO (0608156): hacer un discovery de los comandos
         super().__init__(command, options, commands={
             'config': 'aysa_commands.config.ConfigCommand',
             'registry': 'aysa_commands.registry.RegistryCommand',
