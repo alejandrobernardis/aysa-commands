@@ -3,9 +3,6 @@
 # Created: 2019/10/18
 # ~
 
-import os
-import sys
-
 # version
 SEGMENT = 'dev'
 VERSION = (1, 0, 0, SEGMENT, 0)
@@ -23,19 +20,23 @@ __copyright__ = 'Copyright 2019-% {}'.format(__author__)
 
 try:
 
-    from vistir.misc import get_text_stream
-    stdout = get_text_stream('stdout')
-    stderr = get_text_stream('stderr')
+    import os
+    import sys
 
-    if os.name == 'nt':
-        from vistir.misc import _can_use_color, _wrap_for_color
-        if _can_use_color(stdout):
-            stdout = _wrap_for_color(stdout)
-        if _can_use_color(stderr):
-            stderr = _wrap_for_color(stderr)
-
-    sys.stdout = stdout
-    sys.stderr = stderr
+    # TODO (0608156): fixme...
+    # from vistir.misc import get_text_stream
+    # stdout = get_text_stream('stdout')
+    # stderr = get_text_stream('stderr')
+    #
+    # if os.name == 'nt':
+    #     from vistir.misc import _can_use_color, _wrap_for_color
+    #     if _can_use_color(stdout):
+    #         stdout = _wrap_for_color(stdout)
+    #     if _can_use_color(stderr):
+    #         stderr = _wrap_for_color(stderr)
+    #
+    # sys.stdout = stdout
+    # sys.stderr = stderr
 
     if 'concurrency' in sys.modules:
         del sys.modules['concurrency']
