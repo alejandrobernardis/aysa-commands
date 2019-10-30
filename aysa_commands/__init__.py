@@ -23,14 +23,11 @@ __copyright__ = 'Copyright 2019-% {}'.format(__author__)
 
 try:
 
-    if 'concurrency' in sys.modules:
-        del sys.modules['concurrency']
-
     from vistir.misc import get_text_stream
-    stdout = get_text_stream("stdout")
-    stderr = get_text_stream("stderr")
+    stdout = get_text_stream('stdout')
+    stderr = get_text_stream('stderr')
 
-    if os.name == "nt":
+    if os.name == 'nt':
         from vistir.misc import _can_use_color, _wrap_for_color
         if _can_use_color(stdout):
             stdout = _wrap_for_color(stdout)
@@ -39,6 +36,9 @@ try:
 
     sys.stdout = stdout
     sys.stderr = stderr
+
+    if 'concurrency' in sys.modules:
+        del sys.modules['concurrency']
 
     # import's
     from aysa_commands._common import Command
