@@ -152,6 +152,7 @@ class Command:
         self._output = Printer()
         self._parent = kwargs.pop('parent', None)
         self._logger = kwargs.pop('logger', None)
+        # FIXME (0608156): move to sub_commands
         self.commands = kwargs.pop('commands', None)
 
         # event
