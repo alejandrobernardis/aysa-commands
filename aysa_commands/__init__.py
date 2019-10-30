@@ -9,23 +9,27 @@ import sys
 try:
     if "concurrency" in sys.modules:
         del sys.modules["concurrency"]
+
 except Exception:
     pass
 
-# stdout
-from vistir.misc import get_text_stream
-stdout = get_text_stream("stdout")
-stderr = get_text_stream("stderr")
+try:
+    from vistir.misc import get_text_stream
+    stdout = get_text_stream("stdout")
+    stderr = get_text_stream("stderr")
 
-if os.name == "nt":
-    from vistir.misc import _can_use_color, _wrap_for_color
-    if _can_use_color(stdout):
-        stdout = _wrap_for_color(stdout)
-    if _can_use_color(stderr):
-        stderr = _wrap_for_color(stderr)
+    if os.name == "nt":
+        from vistir.misc import _can_use_color, _wrap_for_color
+        if _can_use_color(stdout):
+            stdout = _wrap_for_color(stdout)
+        if _can_use_color(stderr):
+            stderr = _wrap_for_color(stderr)
 
-sys.stdout = stdout
-sys.stderr = stderr
+    sys.stdout = stdout
+    sys.stderr = stderr
+
+except Exception:
+    pass
 
 # version
 SEGMENT = 'dev'
