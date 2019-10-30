@@ -6,31 +6,6 @@
 import os
 import sys
 
-try:
-    if "concurrency" in sys.modules:
-        del sys.modules["concurrency"]
-
-except Exception:
-    pass
-
-try:
-    from vistir.misc import get_text_stream
-    stdout = get_text_stream("stdout")
-    stderr = get_text_stream("stderr")
-
-    if os.name == "nt":
-        from vistir.misc import _can_use_color, _wrap_for_color
-        if _can_use_color(stdout):
-            stdout = _wrap_for_color(stdout)
-        if _can_use_color(stderr):
-            stderr = _wrap_for_color(stderr)
-
-    sys.stdout = stdout
-    sys.stderr = stderr
-
-except Exception:
-    pass
-
 # version
 SEGMENT = 'dev'
 VERSION = (1, 0, 0, SEGMENT, 1)
@@ -46,49 +21,70 @@ __email__ = 'alejandro.bernardis@gmail.com'
 __license__ = 'MTI License, Version 2.0'
 __copyright__ = 'Copyright 2019-% {}'.format(__author__)
 
-# import's
-from aysa_commands._common import Command
+try:
+
+    if 'concurrency' in sys.modules:
+        del sys.modules['concurrency']
+
+    from vistir.misc import get_text_stream
+    stdout = get_text_stream("stdout")
+    stderr = get_text_stream("stderr")
+
+    if os.name == "nt":
+        from vistir.misc import _can_use_color, _wrap_for_color
+        if _can_use_color(stdout):
+            stdout = _wrap_for_color(stdout)
+        if _can_use_color(stderr):
+            stderr = _wrap_for_color(stderr)
+
+    sys.stdout = stdout
+    sys.stderr = stderr
+
+    # import's
+    from aysa_commands._common import Command
+
+    # TopLevel
+    class TopLevelCommand(Command):
+        """
+        AySA, Utilidad para la gestión de despliegues sobre `docker`.
+
+        Usage:
+            aysa [options] COMMAND [ARGS...]
+
+        Opciones:
+            -h, --help                              Muestra la `ayuda` del programa.
+            -v, --version                           Muestra la `versión` del programa.
+            -D, --debug                             Activa el modo `debug`.
+            -V, --verbose                           Activa el modo `verbose`.
+            -O filename, --debug-output=filename    Archivo de salida para el modo `debug`.
+            -E filename, --env=filename             Archivo de configuración del entorno (`.ini`),
+                                                    el mismo será buscado en la siguiente ruta
+                                                    de no ser definido: `~/.aysa/config.ini`.
+            -X url, --proxy=url                     Configuración del `proxy` en una sola línea:
+                                                    `<protocol>://<username>:<password>@<host>:<port>`
+
+        Comandos disponibles:
+            config      Lista y administra los valores de la configuración del entorno de trabajo
+                        definidos por el archivo `~/.aysa/config.ini`.
+            registry    Lista las `imágenes` y administra los `tags` del `repositorio`.
+            release     Crea las `imágenes` para los entornos de `QA/TESTING` y `PRODUCCIÓN`.
+            remote      Despliega las `imágenes` en los entornos de `DESARROLLO` y `QA/TESTING`.
+
+        > Utilice `aysa COMMAND (-h|--help)` para ver la `ayuda` especifica del comando.
+        """
+
+        def __init__(self, command, options=None, **kwargs):
+            # TODO (0608156): hacer un discovery de los comandos
+            super().__init__(command, options, commands={
+                'config': 'aysa_commands.config.ConfigCommand',
+                'registry': 'aysa_commands.registry.RegistryCommand',
+                'release': 'aysa_commands.registry.ReleaseCommand',
+                'remote': 'aysa_commands.remote.RemoteCommand'
+            }, **kwargs)
 
 
-# TopLevel
-class TopLevelCommand(Command):
-    """
-    AySA, Utilidad para la gestión de despliegues sobre `docker`.
+    def main():
+        TopLevelCommand('aysa_commands', {'version': __version__}).parse()
 
-    Usage:
-        aysa [options] COMMAND [ARGS...]
-
-    Opciones:
-        -h, --help                              Muestra la `ayuda` del programa.
-        -v, --version                           Muestra la `versión` del programa.
-        -D, --debug                             Activa el modo `debug`.
-        -V, --verbose                           Activa el modo `verbose`.
-        -O filename, --debug-output=filename    Archivo de salida para el modo `debug`.
-        -E filename, --env=filename             Archivo de configuración del entorno (`.ini`),
-                                                el mismo será buscado en la siguiente ruta
-                                                de no ser definido: `~/.aysa/config.ini`.
-        -X url, --proxy=url                     Configuración del `proxy` en una sola línea:
-                                                `<protocol>://<username>:<password>@<host>:<port>`
-
-    Comandos disponibles:
-        config      Lista y administra los valores de la configuración del entorno de trabajo
-                    definidos por el archivo `~/.aysa/config.ini`.
-        registry    Lista las `imágenes` y administra los `tags` del `repositorio`.
-        release     Crea las `imágenes` para los entornos de `QA/TESTING` y `PRODUCCIÓN`.
-        remote      Despliega las `imágenes` en los entornos de `DESARROLLO` y `QA/TESTING`.
-
-    > Utilice `aysa COMMAND (-h|--help)` para ver la `ayuda` especifica del comando.
-    """
-
-    def __init__(self, command, options=None, **kwargs):
-        # TODO (0608156): hacer un discovery de los comandos
-        super().__init__(command, options, commands={
-            'config': 'aysa_commands.config.ConfigCommand',
-            'registry': 'aysa_commands.registry.RegistryCommand',
-            'release': 'aysa_commands.registry.ReleaseCommand',
-            'remote': 'aysa_commands.remote.RemoteCommand'
-        }, **kwargs)
-
-
-def main():
-    TopLevelCommand('aysa_commands', {'version': __version__}).parse()
+except Exception:
+    pass
