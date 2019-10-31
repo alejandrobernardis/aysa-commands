@@ -19,24 +19,7 @@ __license__ = 'MTI License, Version 2.0'
 __copyright__ = 'Copyright 2019-% {}'.format(__author__)
 
 try:
-
-    import os
     import sys
-
-    # TODO (0608156): fixme...
-    # from vistir.misc import get_text_stream
-    # stdout = get_text_stream('stdout')
-    # stderr = get_text_stream('stderr')
-    #
-    # if os.name == 'nt':
-    #     from vistir.misc import _can_use_color, _wrap_for_color
-    #     if _can_use_color(stdout):
-    #         stdout = _wrap_for_color(stdout)
-    #     if _can_use_color(stderr):
-    #         stderr = _wrap_for_color(stderr)
-    #
-    # sys.stdout = stdout
-    # sys.stderr = stderr
 
     if 'concurrency' in sys.modules:
         del sys.modules['concurrency']
@@ -77,12 +60,13 @@ try:
 
         def __init__(self, command, options=None, **kwargs):
             # TODO (0608156): hacer un discovery de los comandos
-            super().__init__(command, options, commands={
+            commands = kwargs.pop('commands', {
                 'config': 'aysa_commands.config.ConfigCommand',
                 'registry': 'aysa_commands.registry.RegistryCommand',
                 'release': 'aysa_commands.registry.ReleaseCommand',
                 'remote': 'aysa_commands.remote.RemoteCommand'
-            }, **kwargs)
+            })
+            super().__init__(command, options, commands=commands, **kwargs)
 
 
     def main():
