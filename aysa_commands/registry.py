@@ -109,7 +109,7 @@ class RegistryCommand(_RegistryCommand):
         src = Image(self._fix_image_name(kwargs['source_image_tag']))
         self.api.put_tag(src.repository, src.tag, kwargs['target_tag'])
         self.logger.info('tag repository: %s, tag: %s',
-                          src.repository, src.tag)
+                         src.repository, src.tag)
 
     def rm(self, **kwargs):
         """
