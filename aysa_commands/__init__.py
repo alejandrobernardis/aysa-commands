@@ -61,8 +61,6 @@ try:
             -E filename, --env=filename             Archivo de configuración del entorno (`.ini`),
                                                     el mismo será buscado en la siguiente ruta
                                                     de no ser definido: `~/.aysa/config.ini`.
-            -X url, --proxy=url                     Configuración del `proxy` en una sola línea:
-                                                    `<protocol>://<username>:<password>@<host>:<port>`
 
         Comandos disponibles:
             config      Lista y administra los valores de la configuración del entorno de trabajo
@@ -70,6 +68,9 @@ try:
             registry    Lista las `imágenes` y administra los `tags` del `repositorio`.
             release     Crea las `imágenes` para los entornos de `QA/TESTING` y `PRODUCCIÓN`.
             remote      Despliega las `imágenes` en los entornos de `DESARROLLO` y `QA/TESTING`.
+
+        Actualización:
+            upgrade     Actualiza los comando disponibles.
 
         > Utilice `aysa COMMAND (-h|--help)` para ver la `ayuda` especifica del comando.
         """
