@@ -70,7 +70,7 @@ try:
             remote      Despliega las `imágenes` en los entornos de `DESARROLLO` y `QA/TESTING`.
 
         Actualización:
-            upgrade     Actualiza los comando disponibles.
+            upgrade     Actualiza los comandos disponibles.
 
         > Utilice `aysa COMMAND (-h|--help)` para ver la `ayuda` especifica del comando.
         """
