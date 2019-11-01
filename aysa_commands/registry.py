@@ -129,7 +129,7 @@ class RegistryCommand(_RegistryCommand):
                     self.logger.info('rm repository: %s, tag: %s',
                                       src.repository, src.tag)
                 except Exception as e:
-                    self.logger.error('No se pudo eliminar la image "%s": %s',
+                    self.logger.error('No se pudo eliminar la imagen "%s": %s',
                                       src.image_tag, e)
 
 
@@ -147,19 +147,18 @@ class ReleaseCommand(_RegistryCommand):
 
     def _release(self, source_tag, target_tag, **kwargs):
         if self.yes(**kwargs):
+            msg = 'release image: %s source: %s, target: %s'
             for x in self._list(kwargs['image'], source_tag):
                 t = Image('{}:{}'.format(x.repository, target_tag))
                 try:
                     rollback = '{}-rollback'.format(t.tag)
                     self.api.put_tag(t.repository, t.tag, rollback)
-                    self.logger.info('release source: %s, target: %s',
-                                     t.tag, rollback)
+                    self.logger.info(msg, t.repository, t.tag, rollback)
                 except Exception as e:
                     self.logger.error('Rollback imagen "%s": %s',
                                       t.image_tag, e)
                 self.api.put_tag(x.repository, x.tag, t.tag)
-                self.logger.info('release source: %s, target: %s',
-                                 x.tag, t.tag)
+                self.logger.info(msg, x.repository, x.tag, t.tag)
 
     def quality(self, **kwargs):
         """

@@ -152,7 +152,6 @@ class Command:
         self._output = Printer()
         self._parent = kwargs.pop('parent', None)
         self._logger = kwargs.pop('logger', None)
-        # FIXME (0608156): move to sub_commands
         self.commands = kwargs.pop('commands', None)
 
         # event
@@ -256,6 +255,7 @@ class Command:
 
         self.logger.info('parse cmd: %s, arg: %s, kwargs: %s',
                          argv, args, kwargs)
+        self.logger.debug('parse options: %s', self.options)
         self.env_load()
 
         try:
@@ -274,7 +274,7 @@ class Command:
             raise CommandExit(sdoc)
 
     def execute(self, command, argv=None, global_args=None, **kwargs):
-        self.logger.info('excute command: %s, argv: %s, global_args: %s, '
+        self.logger.info('execute command: %s, argv: %s, global_args: %s, '
                          'kwargs: %s', command, argv, global_args, kwargs)
         if isinstance(command, str):
             command = self.find_command(command)

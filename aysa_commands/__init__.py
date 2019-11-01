@@ -59,14 +59,13 @@ try:
         """
 
         def __init__(self, command, options=None, **kwargs):
-            # TODO (0608156): hacer un discovery de los comandos
-            commands = kwargs.pop('commands', {
+            kwargs.setdefault('commands', {
                 'config': 'aysa_commands.config.ConfigCommand',
                 'registry': 'aysa_commands.registry.RegistryCommand',
                 'release': 'aysa_commands.registry.ReleaseCommand',
                 'remote': 'aysa_commands.remote.RemoteCommand'
             })
-            super().__init__(command, options, commands=commands, **kwargs)
+            super().__init__(command, options, **kwargs)
 
 
     def main():
