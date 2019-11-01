@@ -98,9 +98,7 @@ def scheme(endpoint):
 
 
 class Registry:
-    """
-    Registry Client (simple)
-    """
+    """Registry Client (simple)"""
     def __init__(self, host, insecure=False, verify=True, credentials=None,
                  **kwargs):
         self.host = host
